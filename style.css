@@ -1,0 +1,510 @@
+/* ========================================
+   BASE & RESET
+======================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh;
+    padding-bottom: 60px;
+    color: white;
+}
+
+/* ========================================
+   NAVIGATION BAR
+======================================== */
+nav {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-title {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.nav-btn {
+    background: linear-gradient(135deg, #7f00ff, #00d4ff);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.nav-btn:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+}
+
+/* ========================================
+   CONTAINER
+======================================== */
+.container {
+    max-width: 680px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+    color: white;
+    text-shadow: 0 0 20px rgba(127, 0, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 18px;
+    margin-bottom: 28px;
+}
+
+/* ========================================
+   CARDS
+======================================== */
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* ========================================
+   INPUT & BUTTONS
+======================================== */
+#input-section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#player-input {
+    padding: 12px 16px;
+    font-size: 16px;
+    width: 240px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    transition: border 0.2s;
+}
+
+#player-input::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+#player-input:focus {
+    border-color: #00d4ff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    transition: transform 0.15s, opacity 0.2s;
+}
+
+button:hover {
+    opacity: 0.88;
+    transform: scale(1.04);
+}
+
+#add-player-btn {
+    background: linear-gradient(135deg, #7f00ff, #00d4ff);
+    color: white;
+}
+
+.big-btn {
+    background: linear-gradient(135deg, #00d4ff, #7f00ff);
+    color: white;
+    font-size: 20px;
+    padding: 16px 40px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(127, 0, 255, 0.5);
+    transition: transform 0.15s, opacity 0.2s;
+}
+
+.big-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.big-btn-link {
+    display: inline-block;
+    margin-top: 24px;
+    background: linear-gradient(135deg, #00d4ff, #7f00ff);
+    color: white;
+    font-size: 20px;
+    padding: 16px 40px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(127, 0, 255, 0.5);
+    transition: transform 0.15s, opacity 0.2s;
+}
+
+.big-btn-link:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.green-btn {
+    background: linear-gradient(135deg, #00f260, #0575e6);
+    color: white;
+}
+
+.yellow-btn {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    color: #222;
+}
+
+.red-btn {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    color: white;
+}
+
+/* ========================================
+   PLAYER LIST
+======================================== */
+#player-list {
+    list-style: none;
+    margin-top: 16px;
+}
+
+#player-list li {
+    font-size: 17px;
+    padding: 8px 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#player-count {
+    margin-top: 14px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ========================================
+   TIMER CIRCLE
+======================================== */
+#timer-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7f00ff, #00d4ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    box-shadow: 0 0 30px rgba(127, 0, 255, 0.6);
+}
+
+#timer-display {
+    font-size: 56px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+#timer-circle.urgent {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    box-shadow: 0 0 30px rgba(245, 87, 108, 0.8);
+    animation: pulse 0.7s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to   { transform: scale(1.08); }
+}
+
+#timer-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* ========================================
+   CURRENT PLAYER
+======================================== */
+.current-player {
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 10px;
+}
+
+.current-player strong {
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+}
+
+/* ========================================
+   POINT SECTION
+======================================== */
+#point-section {
+    margin: 16px 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#point-player-select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    margin: 8px 6px;
+}
+
+/* ========================================
+   LEADERBOARD
+======================================== */
+#leaderboard-list {
+    list-style: none;
+    margin: 16px 0;
+}
+
+#leaderboard-list li {
+    font-size: 22px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+#leaderboard-list li:first-child {
+    font-size: 28px;
+    color: #ffd200;
+    text-shadow: 0 0 12px rgba(255, 210, 0, 0.7);
+}
+
+#leaderboard-list li:nth-child(2) {
+    color: #c0c0c0;
+    text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+}
+
+#leaderboard-list li:nth-child(3) {
+    color: #cd7f32;
+    text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
+}
+
+/* ========================================
+   RULES PAGE
+======================================== */
+.rules-card {
+    text-align: left;
+}
+
+.rules-text {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.8;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rules-text:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.rules-text strong {
+    color: #00d4ff;
+}
+
+/* ========================================
+   FIREWORKS ANIMATION
+======================================== */
+.firework {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: firework-explode 1s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes firework-explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(25);
+        opacity: 0;
+    }
+}
+
+.firework-particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle-fly 1.2s ease-out forwards;
+}
+
+@keyframes particle-fly {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   UTILITY
+======================================== */
+.hidden {
+    display: none;
+}
+
+.stage-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 6px;
+}
+/* ========================================
+   SPEAKER REVEAL ANIMATION
+======================================== */
+.big-name {
+    font-size: 52px;
+    font-weight: bold;
+    color: #00d4ff;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+    margin: 16px 0;
+    min-height: 70px;
+}
+
+.cycling {
+    animation: colorCycle 0.1s infinite alternate;
+    font-size: 52px;
+}
+
+@keyframes colorCycle {
+    0%   { color: #00d4ff; text-shadow: 0 0 20px rgba(0,212,255,0.9); }
+    25%  { color: #f093fb; text-shadow: 0 0 20px rgba(240,147,251,0.9); }
+    50%  { color: #ffd200; text-shadow: 0 0 20px rgba(255,210,0,0.9); }
+    75%  { color: #00f260; text-shadow: 0 0 20px rgba(0,242,96,0.9); }
+    100% { color: #f5576c; text-shadow: 0 0 20px rgba(245,87,108,0.9); }
+}
+
+.name-pop {
+    animation: namePop 0.5s ease-out forwards;
+}
+
+@keyframes namePop {
+    0%   { transform: scale(0.5); opacity: 0; }
+    70%  { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
+}
+
+/* Timer circle class (used in game.html) */
+.timer-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7f00ff, #00d4ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    box-shadow: 0 0 30px rgba(127, 0, 255, 0.6);
+}
+
+.timer-circle span {
+    font-size: 56px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.timer-circle.urgent {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    box-shadow: 0 0 30px rgba(245, 87, 108, 0.8);
+    animation: pulse 0.7s infinite alternate;
+}
+Now open game.js, find the loadRound function and replace just these two lines:
+javascriptdocument.getElementById("speaker-name").textContent = currentSpeaker;
+document.getElementById("scoring-speaker-name").textContent = currentSpeaker;
+With this:
+javascript// Dramatic speaker reveal
+document.getElementById("scoring-speaker-name").textContent = currentSpeaker;
+revealSpeaker(currentSpeaker);
+Then add this new function anywhere in game.js:
+javascript// ========================================
+// DRAMATIC SPEAKER REVEAL
+// ========================================
+function revealSpeaker(name) {
+    const cycling = document.getElementById("speaker-cycling");
+    const nameEl = document.getElementById("speaker-name");
+    const names = players.length > 1 ? players : ["?"];
+
+    // Show cycling animation
+    cycling.classList.remove("hidden");
+    nameEl.classList.add("hidden");
+
+    let cycleCount = 0;
+    const maxCycles = 25;
+    let i = 0;
+
+    const cycleInterval = setInterval(() => {
+        // Cycle through random player names rapidly
+        cycling.textContent = names[i % names.length];
+        i++;
+        cycleCount++;
+
+        // Gradually slow down near the end
+        if (cycleCount >= maxCycles) {
+            clearInterval(cycleInterval);
+
+            // Hide cycling, show real name with pop animation
+            cycling.classList.add("hidden");
+            nameEl.textContent = name;
+            nameEl.classList.remove("hidden");
+            nameEl.classList.add("name-pop");
+
+            // Remove animation class after it finishes
+            setTimeout(() => nameEl.classList.remove("name-pop"), 500);
+        }
+    }, 80);
+}
