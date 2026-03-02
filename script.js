@@ -1,14 +1,36 @@
-// ---- GRAB ELEMENTS ----
-const playerInput    = document.getElementById("player-input");
-const addPlayerBtn   = document.getElementById("add-player-btn");
-const playerList     = document.getElementById("player-list");
-const playerCount    = document.getElementById("player-count");
-const startGameBtn   = document.getElementById("start-game-btn");
+// ========================================
+// CINEMATIC OPENING
+// ========================================
+function skipOpening() {
+    const opening = document.getElementById("opening-screen");
+    const main = document.getElementById("main-content");
 
-// ---- GAME STATE ----
+    opening.style.transition = "opacity 0.8s ease-out";
+    opening.style.opacity = "0";
+
+    setTimeout(() => {
+        opening.style.display = "none";
+        main.classList.remove("hidden");
+    }, 800);
+}
+
+// ========================================
+// GRAB ELEMENTS
+// ========================================
+const playerInput  = document.getElementById("player-input");
+const addPlayerBtn = document.getElementById("add-player-btn");
+const playerList   = document.getElementById("player-list");
+const playerCount  = document.getElementById("player-count");
+const startGameBtn = document.getElementById("start-game-btn");
+
+// ========================================
+// GAME STATE
+// ========================================
 let players = [];
 
-// ---- UPDATE PLAYER LIST ----
+// ========================================
+// RENDER PLAYER LIST
+// ========================================
 function renderPlayerList() {
     playerList.innerHTML = "";
 
@@ -62,7 +84,9 @@ function renderPlayerList() {
     playerCount.textContent = players.length + " / 20 players added";
 }
 
-// ---- ADD PLAYER ----
+// ========================================
+// ADD PLAYER
+// ========================================
 function addPlayer() {
     const name = playerInput.value.trim();
 
@@ -81,15 +105,15 @@ function addPlayer() {
 
     players.push(name);
     renderPlayerList();
-
     playerInput.value = "";
     playerInput.focus();
 }
 
-// ---- EDIT PLAYER ----
+// ========================================
+// EDIT PLAYER
+// ========================================
 function editPlayer(index) {
     const newName = prompt("Edit player name:", players[index]);
-
     if (newName === null) return;
     if (newName.trim() === "") {
         alert("Name cannot be empty!");
@@ -99,12 +123,13 @@ function editPlayer(index) {
         alert("That name is already in the list!");
         return;
     }
-
     players[index] = newName.trim();
     renderPlayerList();
 }
 
-// ---- REMOVE PLAYER ----
+// ========================================
+// REMOVE PLAYER
+// ========================================
 function removePlayer(index) {
     const confirmed = confirm("Remove " + players[index] + " from the game?");
     if (confirmed) {
@@ -113,20 +138,20 @@ function removePlayer(index) {
     }
 }
 
-// ---- BUTTON & ENTER KEY ----
-addPlayerBtn.addEventListener("click", addPlayer);
-playerInput.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") addPlayer();
-});
-
-// ---- START GAME ----
-startGameBtn.addEventListener("click", function() {
-    if (players.length < 2) {
-        alert("Please add at least 2 players to start!");
-        return;
-    }
-
-    // Pass players through URL to game.html
-    const playerData = encodeURIComponent(JSON.stringify(players));
-    window.location.href = "game.html?players=" + playerData;
+// ========================================
+// BUTTON & ENTER KEY
+// ========================================
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("add-player-btn").addEventListener("click", addPlayer);
+    document.getElementById("player-input").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") addPlayer();
+    });
+    document.getElementById("start-game-btn").addEventListener("click", function() {
+        if (players.length < 2) {
+            alert("Please add at least 2 players to start!");
+            return;
+        }
+        const playerData = encodeURIComponent(JSON.stringify(players));
+        window.location.href = "game.html?players=" + playerData;
+    });
 });

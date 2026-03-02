@@ -16,6 +16,127 @@ let prepTimerInterval = null;
 let guessTimerInterval = null;
 
 // ========================================
+// WEB AUDIO SETUP
+// ========================================
+let audioCtx = null;
+
+function getAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+}
+
+// ---- Drumroll sound ----
+function playDrumroll(duration) {
+    const ctx = getAudioContext();
+    let time = ctx.currentTime;
+    const end = time + duration;
+    let interval = 0.12;
+
+    while (time < end) {
+        const buf = ctx.createBuffer(1, ctx.sampleRate * 0.05, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < data.length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.02));
+        }
+        const source = ctx.createBufferSource();
+        source.buffer = buf;
+
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0.4, time);
+        gainNode.gain.linearRampToValueAtTime(0, time + 0.05);
+
+        source.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        source.start(time);
+
+        // Speed up drumroll over time for drama
+        interval = Math.max(0.03, interval * 0.97);
+        time += interval;
+    }
+}
+
+// ---- Fanfare / winner sound ----
+function playFanfare() {
+    const ctx = getAudioContext();
+    const notes = [523, 659, 784, 1047, 784, 1047, 1319];
+    const times = [0, 0.15, 0.30, 0.45, 0.65, 0.75, 0.90];
+
+    notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + times[i]);
+
+        gain.gain.setValueAtTime(0, ctx.currentTime + times[i]);
+        gain.gain.linearRampToValueAtTime(0.4, ctx.currentTime + times[i] + 0.05);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + times[i] + 0.25);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + times[i]);
+        osc.stop(ctx.currentTime + times[i] + 0.3);
+    });
+}
+
+// ---- Name reveal pop sound ----
+function playRevealPop() {
+    const ctx = getAudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(400, ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(800, ctx.currentTime + 0.1);
+    osc.frequency.linearRampToValueAtTime(600, ctx.currentTime + 0.2);
+
+    gain.gain.setValueAtTime(0.4, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
+}
+
+// ---- Podium reveal sound (3rd, 2nd, 1st) ----
+function playPodiumSound(place) {
+    const ctx = getAudioContext();
+
+    // Different tones for 3rd, 2nd, 1st
+    const freqs = {
+        3: [392, 494],       // 3rd place — low
+        2: [494, 622],       // 2nd place — mid
+        1: [659, 784, 1047]  // 1st place — high fanfare
+    };
+
+    const notes = freqs[place] || [440];
+    notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = place === 1 ? "sine" : "triangle";
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.18);
+
+        gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.18);
+        gain.gain.linearRampToValueAtTime(0.4, ctx.currentTime + i * 0.18 + 0.05);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.18 + 0.35);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + i * 0.18);
+        osc.stop(ctx.currentTime + i * 0.18 + 0.4);
+    });
+
+    // Extra flourish for 1st place
+    if (place === 1) {
+        setTimeout(() => playFanfare(), 300);
+    }
+}
+
+// ========================================
 // ON PAGE LOAD
 // ========================================
 window.onload = function () {
@@ -68,7 +189,6 @@ function loadRound() {
     if (nextRoundDiv) nextRoundDiv.classList.add("hidden");
 
     showStage(1);
-
     setTimeout(() => revealSpeaker(currentSpeaker), 300);
 }
 
@@ -82,6 +202,9 @@ function revealSpeaker(name) {
     cycling.classList.remove("hidden");
     nameEl.classList.add("hidden");
     nameEl.classList.remove("name-pop");
+
+    // Start drumroll
+    playDrumroll(2.0);
 
     let cycleCount = 0;
     const maxCycles = 25;
@@ -101,28 +224,29 @@ function revealSpeaker(name) {
             void nameEl.offsetWidth;
             nameEl.classList.add("name-pop");
 
+            // Play pop sound when name reveals
+            playRevealPop();
+
             setTimeout(() => nameEl.classList.remove("name-pop"), 500);
         }
     }, 80);
 }
 
 // ========================================
-// SHOW STAGE (safe, no timer triggers)
+// SHOW STAGE
 // ========================================
 function showStage(stageNumber) {
     clearInterval(prepTimerInterval);
     clearInterval(guessTimerInterval);
-
     document.querySelectorAll(".stage").forEach(s => s.classList.add("hidden"));
     document.getElementById("stage-" + stageNumber).classList.remove("hidden");
 }
 
 // ========================================
-// GO TO STAGE (called from buttons)
+// GO TO STAGE
 // ========================================
 function goToStage(stageNumber) {
     showStage(stageNumber);
-
     if (stageNumber === 2) startPrepTimer();
     if (stageNumber === 3) startGuessTimer();
     if (stageNumber === 4) buildGuesserList();
@@ -319,7 +443,7 @@ function showLeaderboard() {
         document.getElementById("leaderboard-title").textContent = "🏆 Final Results!";
         document.getElementById("leaderboard-next-btn").classList.add("hidden");
 
-        // Show 4th place and beyond immediately at the bottom
+        // Show 4th place and beyond immediately
         sorted.forEach((player, index) => {
             if (index <= 2) return;
             const li = document.createElement("li");
@@ -331,7 +455,7 @@ function showLeaderboard() {
             list.appendChild(li);
         });
 
-        // Reveal 3rd, 2nd, 1st with delays
+        // Reveal 3rd, 2nd, 1st dramatically
         const revealOrder = [2, 1, 0];
         const delays = [1500, 3500, 6000];
 
@@ -340,6 +464,9 @@ function showLeaderboard() {
             if (!player) return;
 
             setTimeout(() => {
+                // Play podium sound for each place
+                playPodiumSound(playerIndex === 0 ? 1 : playerIndex === 1 ? 2 : 3);
+
                 const li = document.createElement("li");
                 li.style.padding = "14px 0";
                 li.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
@@ -367,10 +494,8 @@ function showLeaderboard() {
                     li.textContent = "🥉 " + player + " — " + scores[player] + " pts";
                 }
 
-                // Insert at top so order ends up 1st, 2nd, 3rd
                 list.insertBefore(li, list.firstChild);
 
-                // Pop animation
                 setTimeout(() => {
                     li.style.opacity = "1";
                     li.style.transform = "scale(1.08)";
@@ -388,7 +513,7 @@ function showLeaderboard() {
         }, 8000);
 
     } else {
-        // NORMAL ROUND — show all at once
+        // NORMAL ROUND
         document.getElementById("leaderboard-title").textContent = "📊 Round " + currentRound + " Leaderboard";
         document.getElementById("leaderboard-next-btn").textContent = "⏭ Next Round";
         document.getElementById("leaderboard-next-btn").classList.remove("hidden");

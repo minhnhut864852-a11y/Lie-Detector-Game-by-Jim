@@ -16,6 +16,239 @@ body {
 }
 
 /* ========================================
+   CINEMATIC OPENING
+======================================== */
+#opening-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Animated background gradient */
+#opening-screen::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg,
+        #7f00ff, #00d4ff, #ffd200,
+        #f5576c, #00f260, #7f00ff
+    );
+    animation: spinBg 6s linear infinite;
+    opacity: 0.15;
+    top: -50%;
+    left: -50%;
+}
+
+@keyframes spinBg {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Flashing light bars */
+.light-bar {
+    position: absolute;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    z-index: 2;
+}
+
+.left-bar {
+    left: 0;
+    background: linear-gradient(180deg,
+        #7f00ff, #00d4ff, #ffd200,
+        #f5576c, #00f260, #7f00ff);
+    animation: barPulse 0.5s infinite alternate;
+}
+
+.right-bar {
+    right: 0;
+    background: linear-gradient(180deg,
+        #00f260, #f5576c, #ffd200,
+        #00d4ff, #7f00ff, #00f260);
+    animation: barPulse 0.5s infinite alternate-reverse;
+}
+
+@keyframes barPulse {
+    from { opacity: 1; width: 8px; }
+    to   { opacity: 0.4; width: 20px; }
+}
+
+/* Spotlight blobs */
+.spotlight {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.spot-1 {
+    width: 500px;
+    height: 500px;
+    background: #7f00ff;
+    top: -150px;
+    left: -150px;
+    animation: blobFloat 4s ease-in-out infinite alternate;
+}
+
+.spot-2 {
+    width: 400px;
+    height: 400px;
+    background: #00d4ff;
+    bottom: -100px;
+    right: -100px;
+    animation: blobFloat 3.5s ease-in-out infinite alternate-reverse;
+}
+
+.spot-3 {
+    width: 300px;
+    height: 300px;
+    background: #ffd200;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: blobFloat 5s ease-in-out infinite alternate;
+}
+
+@keyframes blobFloat {
+    from { transform: scale(1) translate(0, 0); opacity: 0.15; }
+    to   { transform: scale(1.4) translate(30px, 30px); opacity: 0.25; }
+}
+
+/* Opening content */
+#opening-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+#opening-subtitle {
+    font-size: 20px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    animation: fadeSlideDown 0.8s ease-out forwards;
+}
+
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Title words */
+#opening-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 8px 0;
+}
+
+.title-word {
+    font-size: 90px;
+    font-weight: 900;
+    letter-spacing: 16px;
+    text-transform: uppercase;
+    opacity: 0;
+    display: block;
+    animation: wordBurst 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    line-height: 1;
+}
+
+.title-word:nth-child(1) {
+    color: #00d4ff;
+    text-shadow:
+        0 0 20px rgba(0,212,255,1),
+        0 0 40px rgba(0,212,255,0.7),
+        0 0 80px rgba(0,212,255,0.4);
+    animation-delay: 0.4s;
+}
+
+.title-word:nth-child(2) {
+    color: #f093fb;
+    text-shadow:
+        0 0 20px rgba(240,147,251,1),
+        0 0 40px rgba(240,147,251,0.7),
+        0 0 80px rgba(240,147,251,0.4);
+    animation-delay: 0.9s;
+    font-size: 60px;
+    letter-spacing: 20px;
+}
+
+.title-word:nth-child(3) {
+    color: #ffd200;
+    text-shadow:
+        0 0 20px rgba(255,210,0,1),
+        0 0 40px rgba(255,210,0,0.7),
+        0 0 80px rgba(255,210,0,0.4);
+    animation-delay: 1.4s;
+}
+
+@keyframes wordBurst {
+    0%   { opacity: 0; transform: scale(3); filter: blur(20px); }
+    60%  { opacity: 1; transform: scale(0.95); filter: blur(0); }
+    80%  { transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+/* Tagline */
+#opening-tagline {
+    font-size: 20px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 3px;
+    opacity: 0;
+    animation: fadeSlideUp 0.8s ease-out 2s forwards;
+    margin-top: 8px;
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Skip button */
+#skip-btn {
+    margin-top: 32px;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+    padding: 14px 40px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 40px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeSlideUp 0.8s ease-out 2.5s forwards;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.05);
+}
+
+#skip-btn:hover {
+    border-color: #00d4ff;
+    color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0,212,255,0.4);
+    transform: scale(1.05);
+}
+
+/* ========================================
    NAVIGATION BAR
 ======================================== */
 nav {
@@ -220,7 +453,7 @@ button:hover {
 /* ========================================
    TIMER CIRCLE
 ======================================== */
-#timer-circle {
+.timer-circle {
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -232,14 +465,14 @@ button:hover {
     box-shadow: 0 0 30px rgba(127, 0, 255, 0.6);
 }
 
-#timer-display {
+.timer-circle span {
     font-size: 56px;
     font-weight: bold;
     color: white;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
-#timer-circle.urgent {
+.timer-circle.urgent {
     background: linear-gradient(135deg, #f5576c, #f093fb);
     box-shadow: 0 0 30px rgba(245, 87, 108, 0.8);
     animation: pulse 0.7s infinite alternate;
@@ -248,13 +481,6 @@ button:hover {
 @keyframes pulse {
     from { transform: scale(1); }
     to   { transform: scale(1.08); }
-}
-
-#timer-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 20px;
 }
 
 /* ========================================
@@ -296,6 +522,7 @@ button:hover {
 #leaderboard-list {
     list-style: none;
     margin: 16px 0;
+    padding: 0;
 }
 
 #leaderboard-list li {
@@ -303,22 +530,6 @@ button:hover {
     padding: 12px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-}
-
-#leaderboard-list li:first-child {
-    font-size: 28px;
-    color: #ffd200;
-    text-shadow: 0 0 12px rgba(255, 210, 0, 0.7);
-}
-
-#leaderboard-list li:nth-child(2) {
-    color: #c0c0c0;
-    text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
-}
-
-#leaderboard-list li:nth-child(3) {
-    color: #cd7f32;
-    text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
 }
 
 /* ========================================
@@ -347,63 +558,6 @@ button:hover {
 }
 
 /* ========================================
-   FIREWORKS ANIMATION
-======================================== */
-.firework {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    animation: firework-explode 1s ease-out forwards;
-    pointer-events: none;
-}
-
-@keyframes firework-explode {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(25);
-        opacity: 0;
-    }
-}
-
-.firework-particle {
-    position: fixed;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: particle-fly 1.2s ease-out forwards;
-}
-
-@keyframes particle-fly {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(var(--dx), var(--dy)) scale(0);
-        opacity: 0;
-    }
-}
-
-/* ========================================
-   UTILITY
-======================================== */
-.hidden {
-    display: none;
-}
-
-.stage-label {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.4);
-    margin-bottom: 6px;
-}
-/* ========================================
    SPEAKER REVEAL ANIMATION
 ======================================== */
 .big-name {
@@ -421,11 +575,11 @@ button:hover {
 }
 
 @keyframes colorCycle {
-    0%   { color: #00d4ff; text-shadow: 0 0 20px rgba(0,212,255,0.9); }
-    25%  { color: #f093fb; text-shadow: 0 0 20px rgba(240,147,251,0.9); }
-    50%  { color: #ffd200; text-shadow: 0 0 20px rgba(255,210,0,0.9); }
-    75%  { color: #00f260; text-shadow: 0 0 20px rgba(0,242,96,0.9); }
-    100% { color: #f5576c; text-shadow: 0 0 20px rgba(245,87,108,0.9); }
+    0%   { color: #00d4ff; }
+    25%  { color: #f093fb; }
+    50%  { color: #ffd200; }
+    75%  { color: #00f260; }
+    100% { color: #f5576c; }
 }
 
 .name-pop {
@@ -438,73 +592,37 @@ button:hover {
     100% { transform: scale(1);   opacity: 1; }
 }
 
-/* Timer circle class (used in game.html) */
-.timer-circle {
-    width: 150px;
-    height: 150px;
+/* ========================================
+   FIREWORKS
+======================================== */
+.firework-particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7f00ff, #00d4ff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 20px auto;
-    box-shadow: 0 0 30px rgba(127, 0, 255, 0.6);
+    pointer-events: none;
+    animation: particleFly 1.2s ease-out forwards;
 }
 
-.timer-circle span {
-    font-size: 56px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+@keyframes particleFly {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
 }
 
-.timer-circle.urgent {
-    background: linear-gradient(135deg, #f5576c, #f093fb);
-    box-shadow: 0 0 30px rgba(245, 87, 108, 0.8);
-    animation: pulse 0.7s infinite alternate;
+/* ========================================
+   STAGE LABEL
+======================================== */
+.stage-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 6px;
 }
-Now open game.js, find the loadRound function and replace just these two lines:
-javascriptdocument.getElementById("speaker-name").textContent = currentSpeaker;
-document.getElementById("scoring-speaker-name").textContent = currentSpeaker;
-With this:
-javascript// Dramatic speaker reveal
-document.getElementById("scoring-speaker-name").textContent = currentSpeaker;
-revealSpeaker(currentSpeaker);
-Then add this new function anywhere in game.js:
-javascript// ========================================
-// DRAMATIC SPEAKER REVEAL
-// ========================================
-function revealSpeaker(name) {
-    const cycling = document.getElementById("speaker-cycling");
-    const nameEl = document.getElementById("speaker-name");
-    const names = players.length > 1 ? players : ["?"];
 
-    // Show cycling animation
-    cycling.classList.remove("hidden");
-    nameEl.classList.add("hidden");
-
-    let cycleCount = 0;
-    const maxCycles = 25;
-    let i = 0;
-
-    const cycleInterval = setInterval(() => {
-        // Cycle through random player names rapidly
-        cycling.textContent = names[i % names.length];
-        i++;
-        cycleCount++;
-
-        // Gradually slow down near the end
-        if (cycleCount >= maxCycles) {
-            clearInterval(cycleInterval);
-
-            // Hide cycling, show real name with pop animation
-            cycling.classList.add("hidden");
-            nameEl.textContent = name;
-            nameEl.classList.remove("hidden");
-            nameEl.classList.add("name-pop");
-
-            // Remove animation class after it finishes
-            setTimeout(() => nameEl.classList.remove("name-pop"), 500);
-        }
-    }, 80);
+/* ========================================
+   UTILITY
+======================================== */
+.hidden {
+    display: none;
 }
