@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lie Detector Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <span class="nav-title">🕵️ Lie Detector Game</span>
+        <a href="index.html" class="nav-btn">🏠 Home</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- ===================== -->
+        <!-- STAGE 1: SPEAKER REVEAL -->
+        <!-- ===================== -->
+        <div id="stage-1" class="stage">
+            <p class="stage-label">Round <span class="round-display">1</span> of 3</p>
+            <h1>🎯 Speaker This Round</h1>
+            <div class="card">
+                <p class="subtitle">The spotlight is on...</p>
+                <!-- Dramatic reveal animation -->
+                <div id="speaker-reveal">
+                    <div id="speaker-cycling" class="big-name cycling">?</div>
+                    <h2 id="speaker-name" class="big-name hidden">-</h2>
+                </div>
+                <p class="subtitle">Get ready to craft your 2 lies and 1 truth!</p>
+            </div>
+            <button class="big-btn" onclick="goToStage(2)">⏱ Start Prep Timer</button>
+        </div>
+
+        <!-- ===================== -->
+        <!-- STAGE 2: PREP TIMER -->
+        <!-- ===================== -->
+        <div id="stage-2" class="stage hidden">
+            <p class="stage-label">Round <span class="round-display">1</span> of 3</p>
+            <h1>🧠 Prep Time!</h1>
+            <div class="card">
+                <p class="subtitle">Think of <strong>2 lies</strong> and <strong>1 truth</strong></p>
+                <div id="prep-timer-circle" class="timer-circle">
+                    <span id="prep-timer-display">90</span>
+                </div>
+                <p id="prep-timer-status" class="subtitle">Timer running...</p>
+            </div>
+            <button class="big-btn" onclick="endPrepTimer()">⏭ Skip to Guessing</button>
+        </div>
+
+        <!-- ===================== -->
+        <!-- STAGE 3: GUESSING TIMER -->
+        <!-- ===================== -->
+        <div id="stage-3" class="stage hidden">
+            <p class="stage-label">Round <span class="round-display">1</span> of 3</p>
+            <h1>💬 Guessing Time!</h1>
+            <div class="card">
+                <p class="subtitle">📲 Players — type your guess in <strong>MS Teams chat</strong> now!</p>
+                <div id="guess-timer-circle" class="timer-circle">
+                    <span id="guess-timer-display">60</span>
+                </div>
+                <p id="guess-timer-status" class="subtitle">Timer running...</p>
+            </div>
+            <button class="big-btn" onclick="endGuessTimer()">⏭ Skip to Scoring</button>
+        </div>
+
+        <!-- ===================== -->
+        <!-- STAGE 4: SCORING -->
+        <!-- ===================== -->
+        <div id="stage-4" class="stage hidden">
+            <p class="stage-label">Round <span class="round-display">1</span> of 3</p>
+            <h1>🏅 Scoring</h1>
+
+            <div class="card">
+                <h2>✅ Correct Guessers</h2>
+                <p class="subtitle">Click +1 for each player who guessed correctly</p>
+                <ul id="guesser-list"></ul>
+            </div>
+
+            <div class="card">
+                <h2>🎭 Speaker: <span id="scoring-speaker-name">-</span></h2>
+                <p class="subtitle">How many players guessed <strong>wrong</strong>?</p>
+                <div id="wrong-guess-section">
+                    <div id="wrong-count-display">Wrong guesses: <strong id="wrong-count">0</strong></div>
+                    <br>
+                    <button class="yellow-btn" onclick="addWrongGuess()">+1 Wrong Guess</button>
+                    <button class="red-btn" onclick="removeWrongGuess()">-1 Wrong Guess</button>
+                </div>
+                <p id="speaker-points-earned" class="subtitle" style="margin-top:12px; color:#00d4ff;"></p>
+            </div>
+
+            <button class="big-btn" id="done-scoring-btn" onclick="doneScoringClicked()">✅ Done Scoring</button>
+
+            <div id="fooled-message" class="card hidden" style="margin-top: 24px;">
+                <h2 id="fooled-text"></h2>
+            </div>
+
+            <div id="next-round-div" class="hidden" style="margin-top: 20px;">
+                <button class="big-btn" onclick="goToNextRound()">⏭ Next Round</button>
+            </div>
+        </div>
+
+        <!-- ===================== -->
+        <!-- STAGE 5: LEADERBOARD -->
+        <!-- ===================== -->
+        <div id="stage-5" class="stage hidden">
+            <p class="stage-label">Round <span class="round-display">1</span> of 3</p>
+            <h1 id="leaderboard-title">📊 Round Leaderboard</h1>
+            <div class="card">
+                <ol id="leaderboard-list"></ol>
+            </div>
+            <button class="big-btn" id="leaderboard-next-btn" onclick="leaderboardNext()">⏭ Next Round</button>
+        </div>
+
+    </div>
+
+    <div id="fireworks-container"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>
