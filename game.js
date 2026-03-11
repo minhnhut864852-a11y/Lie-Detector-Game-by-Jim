@@ -8,7 +8,7 @@ let scores = {};
 players.forEach(p => scores[p] = 0);
 
 let currentRound = 1;
-const TOTAL_ROUNDS = 5;
+const TOTAL_ROUNDS = 3;
 let speakerOrder = [];
 let currentSpeaker = "";
 let wrongGuesses = 0;
@@ -579,4 +579,5 @@ function launchFireworks() {
         }
         count++;
     }, 250);
+
 }
